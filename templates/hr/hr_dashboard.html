@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="/" class="btn btn-secondary mb-3">&larr; Back to Dashboard</a>
+<div class="container mt-4">
+    <h3>HR Offboarding - {{ emp.name }}</h3>
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Resignation Letter:</label>
+            {% if emp.resignation_letter %}
+                <a href="/static/uploads/{{ emp.resignation_letter }}" target="_blank">Download</a>
+            {% else %}
+                <input type="file" name="resignation_letter" class="form-control-file">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Status:</label>
+            <select name="status" class="form-control">
+                <option value="Active" {% if emp.status == 'Active' %}selected{% endif %}>Active</option>
+                <option value="Resigned" {% if emp.status == 'Resigned' %}selected{% endif %}>Resigned</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Exit Interview Date:</label>
+            <input type="date" name="exit_interview" class="form-control" value="{{ emp.exit_interview or '' }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update HR Info</button>
+    </form>
+</div>
+{% endblock %} 

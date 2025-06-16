@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Employee Offboarding Portal{% endblock %}
+
+{% block header %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <!-- Stats Cards -->
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                <i class="fas fa-users text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-gray-500 text-sm">Total Employees</h3>
+                <p class="text-2xl font-semibold text-gray-800">1,234</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                <i class="fas fa-user-check text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-gray-500 text-sm">Active Employees</h3>
+                <p class="text-2xl font-semibold text-gray-800">1,180</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                <i class="fas fa-clock text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-gray-500 text-sm">Pending Offboarding</h3>
+                <p class="text-2xl font-semibold text-gray-800">12</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-red-100 text-red-600">
+                <i class="fas fa-user-minus text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-gray-500 text-sm">Completed Offboarding</h3>
+                <p class="text-2xl font-semibold text-gray-800">42</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="bg-white rounded-lg shadow mb-6">
+    <div class="p-4 border-b">
+        <h2 class="text-lg font-semibold text-gray-800">Recent Activity</h2>
+    </div>
+    <div class="p-4">
+        <div class="space-y-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                        <i class="fas fa-user-plus text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm text-gray-800">New employee added: John Doe</p>
+                    <p class="text-xs text-gray-500">2 hours ago</p>
+                </div>
+            </div>
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                        <i class="fas fa-clock text-yellow-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm text-gray-800">Offboarding request initiated for Jane Smith</p>
+                    <p class="text-xs text-gray-500">5 hours ago</p>
+                </div>
+            </div>
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <i class="fas fa-check text-green-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm text-gray-800">Offboarding completed for Mike Johnson</p>
+                    <p class="text-xs text-gray-500">1 day ago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow">
+        <div class="p-4 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Quick Actions</h2>
+        </div>
+        <div class="p-4">
+            <div class="grid grid-cols-2 gap-4">
+                <a href="{{ url_for('add_employee') }}" class="flex items-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100">
+                    <i class="fas fa-user-plus text-blue-600 mr-3"></i>
+                    <span class="text-gray-700">Add Employee</span>
+                </a>
+                <a href="{{ url_for('new_request') }}" class="flex items-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100">
+                    <i class="fas fa-plus-circle text-green-600 mr-3"></i>
+                    <span class="text-gray-700">New Request</span>
+                </a>
+                <a href="{{ url_for('reports') }}" class="flex items-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100">
+                    <i class="fas fa-chart-bar text-purple-600 mr-3"></i>
+                    <span class="text-gray-700">View Reports</span>
+                </a>
+                <a href="{{ url_for('settings') }}" class="flex items-center p-3 rounded-lg bg-gray-50 hover:bg-gray-100">
+                    <i class="fas fa-cog text-gray-600 mr-3"></i>
+                    <span class="text-gray-700">Settings</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow">
+        <div class="p-4 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Upcoming Offboarding</h2>
+        </div>
+        <div class="p-4">
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">Sarah Wilson</p>
+                        <p class="text-sm text-gray-500">Software Engineer</p>
+                    </div>
+                    <span class="px-3 py-1 text-sm bg-yellow-100 text-yellow-800 rounded-full">In Progress</span>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">David Brown</p>
+                        <p class="text-sm text-gray-500">Product Manager</p>
+                    </div>
+                    <span class="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full">Pending</span>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">Emily Davis</p>
+                        <p class="text-sm text-gray-500">UX Designer</p>
+                    </div>
+                    <span class="px-3 py-1 text-sm bg-green-100 text-green-800 rounded-full">Completed</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

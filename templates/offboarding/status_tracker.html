@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Status Tracker - Employee Offboarding Portal{% endblock %}
+
+{% block header %}Offboarding Status Tracker{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow">
+    <div class="p-4 border-b">
+        <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-gray-800">Active Offboarding Requests</h2>
+            <a href="{{ url_for('new_request') }}" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                <i class="fas fa-plus mr-2"></i>New Request
+            </a>
+        </div>
+    </div>
+    <div class="p-4">
+        <div class="space-y-4">
+            {% for request in offboarding_requests %}
+            <div class="border rounded-lg p-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">{{ request.employee_name }}</h3>
+                        <p class="text-sm text-gray-500">{{ request.department }} • Last Working Day: {{ request.last_working_day }}</p>
+                    </div>
+                    <span class="px-3 py-1 text-sm rounded-full
+                        {% if request.status == 'In Progress' %}
+                            bg-yellow-100 text-yellow-800
+                        {% elif request.status == 'Completed' %}
+                            bg-green-100 text-green-800
+                        {% else %}
+                            bg-blue-100 text-blue-800
+                        {% endif %}">
+                        {{ request.status }}
+                    </span>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                        <span>Overall Progress</span>
+                        <span>{{ request.progress }}%</span>
+                    </div>
+                    <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: {{ request.progress }}%"></div>
+                    </div>
+                </div>
+                <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <div class="text-sm font-medium text-gray-500">HR</div>
+                        <div class="mt-1">
+                            <span class="px-2 py-1 text-xs rounded-full
+                                {% if request.hr_status == 'Completed' %}
+                                    bg-green-100 text-green-800
+                                {% elif request.hr_status == 'In Progress' %}
+                                    bg-yellow-100 text-yellow-800
+                                {% else %}
+                                    bg-gray-100 text-gray-800
+                                {% endif %}">
+                                {{ request.hr_status }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm font-medium text-gray-500">IT</div>
+                        <div class="mt-1">
+                            <span class="px-2 py-1 text-xs rounded-full
+                                {% if request.it_status == 'Completed' %}
+                                    bg-green-100 text-green-800
+                                {% elif request.it_status == 'In Progress' %}
+                                    bg-yellow-100 text-yellow-800
+                                {% else %}
+                                    bg-gray-100 text-gray-800
+                                {% endif %}">
+                                {{ request.it_status }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm font-medium text-gray-500">Finance</div>
+                        <div class="mt-1">
+                            <span class="px-2 py-1 text-xs rounded-full
+                                {% if request.finance_status == 'Completed' %}
+                                    bg-green-100 text-green-800
+                                {% elif request.finance_status == 'In Progress' %}
+                                    bg-yellow-100 text-yellow-800
+                                {% else %}
+                                    bg-gray-100 text-gray-800
+                                {% endif %}">
+                                {{ request.finance_status }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm font-medium text-gray-500">Legal</div>
+                        <div class="mt-1">
+                            <span class="px-2 py-1 text-xs rounded-full
+                                {% if request.legal_status == 'Completed' %}
+                                    bg-green-100 text-green-800
+                                {% elif request.legal_status == 'In Progress' %}
+                                    bg-yellow-100 text-yellow-800
+                                {% else %}
+                                    bg-gray-100 text-gray-800
+                                {% endif %}">
+                                {{ request.legal_status }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

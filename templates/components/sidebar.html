@@ -1,0 +1,133 @@
+{% macro sidebar(active_item='') %}
+<div class="sidebar-container">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button id="sidebarToggle" class="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-primary text-white">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
+        <!-- Logo -->
+        <div class="p-4 border-b">
+            <a href="{{ url_for('home') }}" class="flex items-center text-primary">
+                <i class="fas fa-users text-2xl mr-2"></i>
+                <span class="text-xl font-semibold">Offboarding Portal</span>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="p-4">
+            <ul class="space-y-2">
+                <!-- Dashboard -->
+                <li>
+                    <a href="{{ url_for('dashboard') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'dashboard' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                        <i class="fas fa-home w-6"></i>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Employees -->
+                <li>
+                    <div class="flex items-center p-2 rounded-lg hover:bg-gray-100 cursor-pointer" onclick="toggleSubmenu('employeesSubmenu')">
+                        <i class="fas fa-users w-6"></i>
+                        <span class="ml-3">Employees</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </div>
+                    <ul id="employeesSubmenu" class="hidden pl-8 mt-2 space-y-2">
+                        <li>
+                            <a href="{{ url_for('all_employees') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'all_employees' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                                <i class="fas fa-list w-6"></i>
+                                <span class="ml-3">All Employees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('add_employee') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'add_employee' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                                <i class="fas fa-user-plus w-6"></i>
+                                <span class="ml-3">Add Employee</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Offboarding -->
+                <li>
+                    <div class="flex items-center p-2 rounded-lg hover:bg-gray-100 cursor-pointer" onclick="toggleSubmenu('offboardingSubmenu')">
+                        <i class="fas fa-sign-out-alt w-6"></i>
+                        <span class="ml-3">Offboarding</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </div>
+                    <ul id="offboardingSubmenu" class="hidden pl-8 mt-2 space-y-2">
+                        <li>
+                            <a href="{{ url_for('new_request') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'new_request' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                                <i class="fas fa-plus-circle w-6"></i>
+                                <span class="ml-3">New Request</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('status_tracker') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'status_tracker' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                                <i class="fas fa-tasks w-6"></i>
+                                <span class="ml-3">Status Tracker</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('exit_interviews') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'exit_interviews' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                                <i class="fas fa-comments w-6"></i>
+                                <span class="ml-3">Exit Interviews</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+                <li>
+                    <a href="{{ url_for('reports') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'reports' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                        <i class="fas fa-chart-bar w-6"></i>
+                        <span class="ml-3">Reports</span>
+                    </a>
+                </li>
+
+                <!-- Settings -->
+                <li>
+                    <a href="{{ url_for('settings') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'settings' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                        <i class="fas fa-cog w-6"></i>
+                        <span class="ml-3">Settings</span>
+                    </a>
+                </li>
+
+                <!-- Contact Us -->
+                <li>
+                    <a href="{{ url_for('contact') }}" class="flex items-center p-2 rounded-lg hover:bg-gray-100 {% if active_item == 'contact' %}bg-primary text-white hover:bg-primary-dark{% endif %}">
+                        <i class="fas fa-envelope w-6"></i>
+                        <span class="ml-3">Contact Us</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden"></div>
+</div>
+
+<!-- Sidebar JavaScript -->
+<script>
+    function toggleSubmenu(id) {
+        const submenu = document.getElementById(id);
+        submenu.classList.toggle('hidden');
+    }
+
+    document.getElementById('sidebarToggle').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+    });
+
+    document.getElementById('sidebarOverlay').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    });
+</script>
+{% endmacro %} 

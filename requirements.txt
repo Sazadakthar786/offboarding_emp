@@ -1,0 +1,5 @@
+Flask==2.2.5
+Werkzeug==2.2.3
+pillow>=9.0.0  # For image handling
+reportlab>=3.6.0  # For PDF generation
+python-dotenv==0.21.1 

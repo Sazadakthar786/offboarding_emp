@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Employee Offboarding Portal{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4 mb-4">
+            <i class="fas fa-users me-2"></i>
+            Employee Offboarding Portal
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    {% for emp in employees %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ emp.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ emp.employee_id }}</h6>
+                <p class="card-text">
+                    <span class="badge {% if emp.status == 'Active' %}bg-success{% else %}bg-warning{% endif %}">
+                        {{ emp.status }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                        <i class="fas fa-building me-1"></i>
+                        {{ emp.department }}
+                    </small>
+                </p>
+                <a href="{{ url_for('employee_detail', employee_id=emp.employee_id) }}" 
+                   class="btn btn-primary">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    View Details
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 
