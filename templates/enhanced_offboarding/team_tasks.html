@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}{{ team_name.replace('_', ' ').title() }} Tasks{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-users"></i> {{ team_name.replace('_', ' ').title() }} Tasks</h2>
+                    <p class="text-muted mb-0">All tasks assigned to {{ team_name.replace('_', ' ').title() }} team</p>
+                </div>
+                <a href="{{ url_for('enhanced_status_tracker') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Tracker
+                </a>
+            </div>
+
+            {% if tasks %}
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-list"></i> Task List ({{ tasks|length }} tasks)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Step</th>
+                                    <th>Task</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                    <th>Completed</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in tasks %}
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <strong>{{ task.employee_name }}</strong><br>
+                                            <small class="text-muted">{{ task.employee_id }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ task.step_name }}</small>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ task.task_name }}</strong><br>
+                                            <small class="text-muted">{{ task.task_description }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if task.status == 'completed' %}
+                                            <span class="badge bg-success">Completed</span>
+                                        {% elif task.status == 'in_progress' %}
+                                            <span class="badge bg-primary">In Progress</span>
+                                        {% elif task.status == 'overdue' %}
+                                            <span class="badge bg-warning">Overdue</span>
+                                        {% elif task.status == 'blocked' %}
+                                            <span class="badge bg-danger">Blocked</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small>{{ task.due_date[:10] }}</small>
+                                    </td>
+                                    <td>
+                                        {% if task.completed_date %}
+                                            <small class="text-success">{{ task.completed_date[:10] }}</small><br>
+                                            <small class="text-muted">by {{ task.completed_by }}</small>
+                                        {% else %}
+                                            <small class="text-muted">Not completed</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('enhanced_workflow_detail', request_id=task.request_id) }}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h5 class="text-success">No Tasks Found</h5>
+                    <p class="text-muted">All tasks for {{ team_name.replace('_', ' ').title() }} team are completed!</p>
+                    <a href="{{ url_for('enhanced_status_tracker') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Tracker
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.badge {
+    font-size: 0.75em;
+}
+</style>
+{% endblock %} 

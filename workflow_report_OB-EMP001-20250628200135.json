@@ -1,0 +1,72 @@
+{
+  "request_id": "OB-EMP001-20250628200135",
+  "employee_data": {
+    "employee_id": "EMP001",
+    "name": "John Doe",
+    "email": "john.doe@company.com",
+    "last_working_day": "2024-02-15",
+    "reason_for_leaving": "resignation",
+    "line_manager": "Jane Smith",
+    "department": "Engineering",
+    "position": "Senior Software Engineer"
+  },
+  "workflow_summary": {
+    "status": "pending",
+    "overall_progress": 10.714285714285714,
+    "created_date": "2025-06-28T20:01:35.441433",
+    "current_step": "step_1_initial_request"
+  },
+  "steps_detail": {
+    "step_1_initial_request": {
+      "name": "Initial Request by Line Manager",
+      "responsible_team": "line_manager",
+      "status": "completed",
+      "due_date": "2025-06-28T20:01:35.441433",
+      "completed_date": "2025-06-28T20:01:35.446240",
+      "tasks": [
+        {
+          "id": "capture_employee_details",
+          "name": "Capture Employee Details",
+          "description": "Collect employee ID, name, email, LWD, and reason for leaving",
+          "required_fields": [
+            "employee_id",
+            "name",
+            "email",
+            "last_working_day",
+            "reason_for_leaving"
+          ],
+          "status": "completed",
+          "completed_date": "2025-06-28T20:01:35.446240",
+          "completed_by": "Jane Smith",
+          "notes": [
+            {
+              "date": "2025-06-28T20:01:35.446240",
+              "note": "Employee details captured successfully",
+              "added_by": "Jane Smith"
+            }
+          ]
+        },
+        {
+          "id": "validate_request",
+          "name": "Validate Request",
+          "description": "Ensure all required information is complete and accurate",
+          "dependencies": [
+            "capture_employee_details"
+          ],
+          "status": "completed",
+          "completed_date": "2025-06-28T20:01:35.446240",
+          "completed_by": "Jane Smith",
+          "notes": [
+            {
+              "date": "2025-06-28T20:01:35.446240",
+              "note": "Request validated and approved",
+              "added_by": "Jane Smith"
+            }
+          ]
+        }
+      ]
+    },
+    "step_2_people_ops_review": {
+      "name": "People Ops Review and Documentation",
+      "responsible_team": "people_ops",
+      "status": 

@@ -1,0 +1,22 @@
+{
+  "request_id": "OB-EMP001-20250628195812",
+  "employee_data": {
+    "employee_id": "EMP001",
+    "name": "John Doe",
+    "email": "john.doe@company.com",
+    "last_working_day": "2024-02-15",
+    "reason_for_leaving": "resignation",
+    "line_manager": "Jane Smith",
+    "department": "Engineering",
+    "position": "Senior Software Engineer"
+  },
+  "workflow_summary": {
+    "status": "pending",
+    "overall_progress": 10.714285714285714,
+    "created_date": "2025-06-28T19:58:12.576155",
+    "current_step": "step_1_initial_request"
+  },
+  "steps_detail": {
+    "step_1_initial_request": {
+      "name": "Initial Request by Line Manager",
+      "responsible_team": 

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Overdue Tasks{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-exclamation-triangle"></i> Overdue Tasks</h2>
+                    <p class="text-muted mb-0">Tasks that have passed their due date</p>
+                </div>
+                <a href="{{ url_for('enhanced_status_tracker') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Tracker
+                </a>
+            </div>
+
+            {% if overdue_tasks %}
+            <div class="alert alert-warning">
+                <h6><i class="fas fa-exclamation-triangle"></i> Attention Required</h6>
+                <p class="mb-0">There are {{ overdue_tasks|length }} overdue task(s) that require immediate attention.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-clock"></i> Overdue Tasks ({{ overdue_tasks|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Step</th>
+                                    <th>Responsible Team</th>
+                                    <th>Due Date</th>
+                                    <th>Days Overdue</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in overdue_tasks %}
+                                <tr class="table-warning">
+                                    <td>
+                                        <div>
+                                            <strong>{{ task.employee_name }}</strong><br>
+                                            <small class="text-muted">{{ task.employee_id }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ task.step_name }}</strong><br>
+                                            <small class="text-muted">Request: {{ task.request_id }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if task.responsible_team is iterable and task.responsible_team is not string %}
+                                            {% for team in task.responsible_team %}
+                                                <span class="badge bg-info me-1">{{ team.value.replace('_', ' ').title() }}</span>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="badge bg-info">{{ task.responsible_team.value.replace('_', ' ').title() }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="text-danger">{{ task.due_date[:10] }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-danger">{{ task.days_overdue }} day(s)</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('enhanced_workflow_detail', request_id=task.request_id) }}" 
+                                           class="btn btn-sm btn-warning">
+                                            <i class="fas fa-exclamation-triangle"></i> Urgent Action
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-2x text-warning mb-2"></i>
+                            <h6>People Ops</h6>
+                            <a href="{{ url_for('team_tasks', team_name='people_ops') }}" class="btn btn-outline-warning btn-sm">
+                                View Tasks
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <i class="fas fa-laptop fa-2x text-warning mb-2"></i>
+                            <h6>IT Team</h6>
+                            <a href="{{ url_for('team_tasks', team_name='it') }}" class="btn btn-outline-warning btn-sm">
+                                View Tasks
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <i class="fas fa-dollar-sign fa-2x text-warning mb-2"></i>
+                            <h6>Finance</h6>
+                            <a href="{{ url_for('team_tasks', team_name='finance') }}" class="btn btn-outline-warning btn-sm">
+                                View Tasks
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h5 class="text-success">No Overdue Tasks!</h5>
+                    <p class="text-muted">All tasks are on schedule. Great job!</p>
+                    <a href="{{ url_for('enhanced_status_tracker') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Tracker
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-warning {
+    background-color: #fff3cd !important;
+}
+
+.table-warning:hover {
+    background-color: #ffeaa7 !important;
+}
+
+.badge {
+    font-size: 0.75em;
+}
+
+.card.border-warning {
+    border-color: #ffc107 !important;
+}
+</style>
+{% endblock %} 

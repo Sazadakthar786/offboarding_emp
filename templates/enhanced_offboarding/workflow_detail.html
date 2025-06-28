@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+
+{% block title %}Workflow Detail - {{ workflow.employee_data.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-user-minus"></i> Enhanced Offboarding Workflow</h2>
+                    <p class="text-muted mb-0">
+                        Request ID: <strong>{{ workflow.request_id }}</strong> | 
+                        Employee: <strong>{{ workflow.employee_data.name }}</strong> ({{ workflow.employee_data.employee_id }})
+                    </p>
+                </div>
+                <div class="btn-group">
+                    <a href="{{ url_for('enhanced_status_tracker') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                    <a href="{{ url_for('export_workflow_report', request_id=workflow.request_id) }}" 
+                       class="btn btn-outline-primary" target="_blank">
+                        <i class="fas fa-download"></i> Export Report
+                    </a>
+                </div>
+            </div>
+
+            <!-- Employee Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-user"></i> Employee Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <strong>Name:</strong><br>
+                            {{ workflow.employee_data.name }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Employee ID:</strong><br>
+                            {{ workflow.employee_data.employee_id }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Email:</strong><br>
+                            {{ workflow.employee_data.email }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Last Working Day:</strong><br>
+                            {{ workflow.employee_data.last_working_day }}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <strong>Reason for Leaving:</strong><br>
+                            {{ workflow.employee_data.reason_for_leaving.replace('_', ' ').title() }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Department:</strong><br>
+                            {{ workflow.employee_data.department or 'N/A' }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Position:</strong><br>
+                            {{ workflow.employee_data.position or 'N/A' }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Line Manager:</strong><br>
+                            {{ workflow.employee_data.line_manager or 'N/A' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overall Progress -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-line"></i> Overall Progress</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="progress progress-large">
+                                <div class="progress-bar" role="progressbar" 
+                                     aria-valuenow="{{ workflow.overall_progress }}" 
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    {{ "%.1f"|format(workflow.overall_progress) }}% Complete
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="badge bg-{{ 'success' if workflow.status == 'completed' else 'primary' if workflow.status == 'in_progress' else 'secondary' }} fs-6">
+                                {{ workflow.status.replace('_', ' ').title() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflow Steps -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-list-ol"></i> Workflow Steps</h5>
+                </div>
+                <div class="card-body">
+                    {% for step_id, step in workflow.steps.items() %}
+                    <div class="workflow-step mb-4">
+                        <div class="step-header d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                            <div>
+                                <h6 class="mb-1">{{ step.name }}</h6>
+                                <small class="text-muted">
+                                    <i class="fas fa-users"></i> 
+                                    {% if step.responsible_team is iterable and step.responsible_team is not string %}
+                                        {{ step.responsible_team|join(', ') }}
+                                    {% else %}
+                                        {{ step.responsible_team }}
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-{{ 'success' if step.status == 'completed' else 'warning' if step.status == 'overdue' else 'secondary' }}">
+                                    {{ step.status.replace('_', ' ').title() }}
+                                </span>
+                                <br>
+                                <small class="text-muted">Due: {{ step.due_date[:10] }}</small>
+                            </div>
+                        </div>
+                        
+                        <div class="step-tasks mt-3">
+                            {% for task in step.tasks %}
+                            <div class="task-item border rounded p-3 mb-2">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">{{ task.name }}</h6>
+                                        <p class="text-muted mb-2">{{ task.description }}</p>
+                                        {% if task.completed_by %}
+                                        <small class="text-success">
+                                            <i class="fas fa-check"></i> Completed by {{ task.completed_by }} 
+                                            on {{ task.completed_date[:10] }}
+                                        </small>
+                                        {% endif %}
+                                        {% if task.notes %}
+                                        <div class="task-notes mt-2">
+                                            {% for note in task.notes %}
+                                            <div class="note-item bg-light p-2 rounded mb-1">
+                                                <small class="text-muted">{{ note.date[:10] }} - {{ note.added_by }}:</small><br>
+                                                <small>{{ note.note }}</small>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="ms-3">
+                                        <span class="badge bg-{{ 'success' if task.status == 'completed' else 'warning' if task.status == 'overdue' else 'secondary' }}">
+                                            {{ task.status.replace('_', ' ').title() }}
+                                        </span>
+                                        
+                                        {% if task.status != 'completed' %}
+                                        <button class="btn btn-sm btn-outline-primary mt-1" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#updateTaskModal"
+                                                data-step-id="{{ step_id }}"
+                                                data-task-id="{{ task.id }}"
+                                                data-task-name="{{ task.name }}">
+                                            <i class="fas fa-edit"></i> Update
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-sticky-note"></i> Workflow Notes</h5>
+                </div>
+                <div class="card-body">
+                    {% if workflow.notes %}
+                    <div class="notes-list mb-3">
+                        {% for note in workflow.notes %}
+                        <div class="note-item border rounded p-3 mb-2">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ note.added_by }}</strong>
+                                <small class="text-muted">{{ note.date[:19] }}</small>
+                            </div>
+                            <p class="mb-0 mt-1">{{ note.note }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="POST" action="{{ url_for('add_workflow_note', request_id=workflow.request_id) }}">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <textarea class="form-control" name="note" rows="3" placeholder="Add a note to this workflow..." required></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control mb-2" name="added_by" placeholder="Your name" required>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-plus"></i> Add Note
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Task Modal -->
+<div class="modal fade" id="updateTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Task Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('update_enhanced_task', request_id=workflow.request_id) }}">
+                <div class="modal-body">
+                    <input type="hidden" name="step_id" id="modalStepId">
+                    <input type="hidden" name="task_id" id="modalTaskId">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Task</label>
+                        <input type="text" class="form-control" id="modalTaskName" readonly>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" name="status" required>
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="overdue">Overdue</option>
+                            <option value="blocked">Blocked</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="completed_by" class="form-label">Completed By</label>
+                        <input type="text" class="form-control" name="completed_by" placeholder="Your name">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" name="notes" rows="3" placeholder="Add any notes about this task..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle modal data
+    const updateTaskModal = document.getElementById('updateTaskModal');
+    if (updateTaskModal) {
+        updateTaskModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const stepId = button.getAttribute('data-step-id');
+            const taskId = button.getAttribute('data-task-id');
+            const taskName = button.getAttribute('data-task-name');
+            
+            document.getElementById('modalStepId').value = stepId;
+            document.getElementById('modalTaskId').value = taskId;
+            document.getElementById('modalTaskName').value = taskName;
+        });
+    }
+});
+</script>
+
+<style>
+.progress {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.progress-large {
+    height: 30px;
+}
+
+.progress-bar {
+    background-color: #007bff;
+    transition: width 0.6s ease;
+}
+
+.workflow-step {
+    border-left: 4px solid #dee2e6;
+    padding-left: 15px;
+}
+
+.workflow-step .step-header {
+    border-left: 4px solid #007bff;
+}
+
+.task-item {
+    background-color: #f8f9fa;
+    border-left: 3px solid #dee2e6 !important;
+}
+
+.task-item:hover {
+    background-color: #e9ecef;
+}
+
+.note-item {
+    background-color: #f8f9fa;
+}
+</style>
+{% endblock %} 

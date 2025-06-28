@@ -1,0 +1,40 @@
+{
+    "employees": [
+        {
+            "employee_id": "EMP001",
+            "name": "John Doe",
+            "department": "HR",
+            "email": "john.doe@company.com",
+            "status": "Resigned",
+            "resignation_letter": "C:/Users/sazad/OneDrive/Desktop/MY_PERSONAL_DOCUMENT/I'd card.pdf",
+            "loan_balance": 0,
+            "paid_loan": true,
+            "final_salary": 0,
+            "exit_date": "2025-05-11"
+        },
+        {
+            "employee_id": "EMP002",
+            "name": "Jane Smith",
+            "department": "IT",
+            "email": "jane.smith@company.com",
+            "status": "Active",
+            "resignation_letter": "resignation_letters/jane_smith.pdf",
+            "loan_balance": 5000,
+            "paid_loan": false,
+            "final_salary": 7500,
+            "exit_date": ""
+        },
+        {
+            "employee_id": "EMP003",
+            "name": "Mike Johnson",
+            "department": "Finance",
+            "email": "mike.johnson@company.com",
+            "status": "Active",
+            "resignation_letter": "",
+            "loan_balance": 0,
+            "paid_loan": true,
+            "final_salary": 0,
+            "exit_date": ""
+        }
+    ]
+}

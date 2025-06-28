@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="/" class="btn btn-secondary mb-3">&larr; Back to Dashboard</a>
+<div class="container mt-4">
+    <h3>Legal Offboarding - {{ emp.name }}</h3>
+    <form method="post">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="nda_validated" id="nda_validated" {% if emp.nda_validated %}checked{% endif %}>
+            <label class="form-check-label" for="nda_validated">NDA Validated</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="conf_docs_returned" id="conf_docs_returned" {% if emp.conf_docs_returned %}checked{% endif %}>
+            <label class="form-check-label" for="conf_docs_returned">Confidential Documents Returned</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Update Legal Info</button>
+    </form>
+</div>
+{% endblock %} 

@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Enhanced Offboarding Status Tracker{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-tasks"></i> Enhanced Offboarding Status Tracker</h2>
+                <a href="{{ url_for('new_enhanced_request') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Enhanced Request
+                </a>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <a href="{{ url_for('team_tasks', team_name='people_ops') }}" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-users"></i> People Ops Tasks
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ url_for('team_tasks', team_name='it') }}" class="btn btn-outline-info w-100">
+                        <i class="fas fa-laptop"></i> IT Tasks
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ url_for('team_tasks', team_name='finance') }}" class="btn btn-outline-success w-100">
+                        <i class="fas fa-dollar-sign"></i> Finance Tasks
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ url_for('overdue_tasks') }}" class="btn btn-outline-warning w-100">
+                        <i class="fas fa-exclamation-triangle"></i> Overdue Tasks
+                    </a>
+                </div>
+            </div>
+
+            {% if workflows %}
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-list"></i> Active Workflows</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Employee</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                    <th>Current Step</th>
+                                    <th>Created Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for workflow in workflows %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ workflow.request_id }}</strong>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ workflow.employee_data.name }}</strong><br>
+                                            <small class="text-muted">{{ workflow.employee_data.employee_id }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if workflow.status == 'completed' %}
+                                            <span class="badge bg-success">Completed</span>
+                                        {% elif workflow.status == 'in_progress' %}
+                                            <span class="badge bg-primary">In Progress</span>
+                                        {% elif workflow.status == 'pending' %}
+                                            <span class="badge bg-secondary">Pending</span>
+                                        {% elif workflow.status == 'overdue' %}
+                                            <span class="badge bg-warning">Overdue</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ workflow.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="progress progress-custom">
+                                            <div class="progress-bar" role="progressbar" 
+                                                 aria-valuenow="{{ workflow.overall_progress }}" 
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ "%.1f"|format(workflow.overall_progress) }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ workflow.current_step.replace('_', ' ').title() }}</small>
+                                    </td>
+                                    <td>
+                                        <small>{{ workflow.created_date[:10] }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('enhanced_workflow_detail', request_id=workflow.request_id) }}" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                            <a href="{{ url_for('export_workflow_report', request_id=workflow.request_id) }}" 
+                                               class="btn btn-sm btn-outline-secondary" target="_blank">
+                                                <i class="fas fa-download"></i> Export
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No Enhanced Workflows Found</h5>
+                    <p class="text-muted">Create your first enhanced offboarding request to get started.</p>
+                    <a href="{{ url_for('new_enhanced_request') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create First Request
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.progress-custom {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    height: 20px;
+}
+
+.progress-bar {
+    background-color: #007bff;
+    transition: width 0.6s ease;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.btn-group .btn {
+    margin-right: 2px;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+</style>
+{% endblock %} 

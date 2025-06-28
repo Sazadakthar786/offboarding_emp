@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Reports - Employee Offboarding Portal{% endblock %}
+
+{% block header %}Reports{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Offboarding Statistics -->
+    <div class="bg-white rounded-lg shadow">
+        <div class="p-4 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Offboarding Statistics</h2>
+        </div>
+        <div class="p-4">
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Total Offboarding Requests</span>
+                    <span class="text-lg font-semibold">150</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Completed This Month</span>
+                    <span class="text-lg font-semibold">25</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Average Processing Time</span>
+                    <span class="text-lg font-semibold">7 days</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department-wise Distribution -->
+    <div class="bg-white rounded-lg shadow">
+        <div class="p-4 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Department-wise Distribution</h2>
+        </div>
+        <div class="p-4">
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">IT Department</span>
+                    <span class="text-lg font-semibold">45</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">HR Department</span>
+                    <span class="text-lg font-semibold">30</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Finance Department</span>
+                    <span class="text-lg font-semibold">25</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Other Departments</span>
+                    <span class="text-lg font-semibold">50</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Reports -->
+    <div class="bg-white rounded-lg shadow md:col-span-2">
+        <div class="p-4 border-b">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-800">Recent Reports</h2>
+                <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                    <i class="fas fa-download mr-2"></i>Export
+                </button>
+            </div>
+        </div>
+        <div class="p-4">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Generated Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                Monthly Offboarding Summary
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                March 1, 2024
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Summary Report
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-primary hover:text-primary-dark mr-3">View</a>
+                                <a href="#" class="text-primary hover:text-primary-dark">Download</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                Department Performance Analysis
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                February 28, 2024
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Analysis Report
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-primary hover:text-primary-dark mr-3">View</a>
+                                <a href="#" class="text-primary hover:text-primary-dark">Download</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

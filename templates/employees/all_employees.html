@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}All Employees{% endblock %}
+
+{% block header %}
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="h3 mb-0 text-gray-800">All Employees</h1>
+    <a href="{{ url_for('add_employee') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add New Employee
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Employee List</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="employeesTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in employees %}
+                            <tr>
+                                <td>{{ employee.name }}</td>
+                                <td>{{ employee.email }}</td>
+                                <td>{{ employee.department }}</td>
+                                <td>{{ employee.position }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if employee.status == 'Active' else 'warning' }}">
+                                        {{ employee.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ url_for('employee_detail', employee_id=employee.employee_id) }}" 
+                                           class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        {% if employee.status == 'Active' %}
+                                        <form method="POST" action="{{ url_for('update_status', employee_id=employee.employee_id) }}" 
+                                              class="d-inline">
+                                            <input type="hidden" name="status" value="Resigned">
+                                            <button type="submit" class="btn btn-sm btn-warning" 
+                                                    onclick="return confirm('Are you sure you want to mark this employee as resigned?')">
+                                                <i class="fas fa-user-minus"></i>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    $('#employeesTable').DataTable({
+        order: [[0, 'asc']], // Sort by name by default
+        pageLength: 10,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search employees..."
+        }
+    });
+});
+</script>
+{% endblock %}
+{% endblock %} 
