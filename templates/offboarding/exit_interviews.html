@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "base.html" %}
 
 {% block title %}Exit Interviews{% endblock %}
@@ -151,4 +152,159 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+=======
+{% extends "base.html" %}
+
+{% block title %}Exit Interviews{% endblock %}
+
+{% block header %}
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="h3 mb-0 text-gray-800">Exit Interviews</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newInterviewModal">
+        <i class="fas fa-plus"></i> Schedule New Interview
+    </button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Scheduled Interviews</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="interviewsTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Interview Date</th>
+                                <th>Interviewer</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for interview in exit_interviews %}
+                            <tr>
+                                <td>{{ interview.employee_name }}</td>
+                                <td>{{ interview.department }}</td>
+                                <td>{{ interview.interview_date }}</td>
+                                <td>{{ interview.interviewer }}</td>
+                                <td>
+                                    <span class="badge bg-{{ interview.status|lower }}">
+                                        {{ interview.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-info" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#viewInterviewModal{{ interview.id }}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        {% if interview.status == 'Pending' %}
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editInterviewModal{{ interview.id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Interview Modal -->
+<div class="modal fade" id="newInterviewModal" tabindex="-1" aria-labelledby="newInterviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newInterviewModalLabel">Schedule New Exit Interview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('exit_interviews') }}" class="needs-validation" novalidate>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="employee_id" class="form-label">Employee</label>
+                        <select class="form-select" id="employee_id" name="employee_id" required>
+                            <option value="">Select Employee</option>
+                            {% for employee in employees %}
+                                {% if employee.status == 'Resigned' %}
+                                <option value="{{ employee.id }}">{{ employee.name }} ({{ employee.department }})</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select an employee.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="interview_date" class="form-label">Interview Date</label>
+                        <input type="datetime-local" class="form-control" id="interview_date" name="interview_date" required>
+                        <div class="invalid-feedback">
+                            Please select the interview date and time.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="interviewer" class="form-label">Interviewer</label>
+                        <input type="text" class="form-control" id="interviewer" name="interviewer" required>
+                        <div class="invalid-feedback">
+                            Please enter the interviewer's name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedback" class="form-label">Initial Notes</label>
+                        <textarea class="form-control" id="feedback" name="feedback" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Schedule Interview</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+
+// Initialize DataTable
+$(document).ready(function() {
+    $('#interviewsTable').DataTable({
+        order: [[2, 'desc']], // Sort by interview date by default
+        pageLength: 10,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search interviews..."
+        }
+    });
+});
+</script>
+{% endblock %}
+>>>>>>> 43451fc5cf1ae2c38def63e77b6905481892c38f
 {% endblock %} 

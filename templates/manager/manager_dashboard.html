@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 {% block content %}
 <a href="/" class="btn btn-secondary mb-3">&larr; Back to Dashboard</a>
@@ -15,4 +16,23 @@
         <button type="submit" class="btn btn-primary mt-3">Update Manager Info</button>
     </form>
 </div>
+=======
+{% extends 'base.html' %}
+{% block content %}
+<a href="/" class="btn btn-secondary mb-3">&larr; Back to Dashboard</a>
+<div class="container mt-4">
+    <h3>Manager Offboarding - {{ emp.name }}</h3>
+    <form method="post">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="handover_confirmed" id="handover_confirmed" {% if emp.handover_confirmed %}checked{% endif %}>
+            <label class="form-check-label" for="handover_confirmed">Confirm Handover</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="checklist_approved" id="checklist_approved" {% if emp.checklist_approved %}checked{% endif %}>
+            <label class="form-check-label" for="checklist_approved">Approve Checklist</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Update Manager Info</button>
+    </form>
+</div>
+>>>>>>> 43451fc5cf1ae2c38def63e77b6905481892c38f
 {% endblock %} 

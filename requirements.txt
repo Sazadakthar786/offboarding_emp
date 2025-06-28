@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 Flask==2.2.5
 Werkzeug==2.2.3
 pillow>=9.0.0  # For image handling
 reportlab>=3.6.0  # For PDF generation
+=======
+Flask==2.2.5
+Werkzeug==2.2.3
+pillow>=9.0.0  # For image handling
+reportlab>=3.6.0  # For PDF generation
+>>>>>>> 43451fc5cf1ae2c38def63e77b6905481892c38f
 python-dotenv==0.21.1 

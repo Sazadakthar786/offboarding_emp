@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 {% block content %}
 <a href="/" class="btn btn-secondary mb-3">&larr; Back to Dashboard</a>
@@ -19,4 +20,27 @@
         <button type="submit" class="btn btn-primary mt-3">Update IT Info</button>
     </form>
 </div>
+=======
+{% extends 'base.html' %}
+{% block content %}
+<a href="/" class="btn btn-secondary mb-3">&larr; Back to Dashboard</a>
+<div class="container mt-4">
+    <h3>IT Offboarding - {{ emp.name }}</h3>
+    <form method="post">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="it_access_revoked" id="it_access_revoked" {% if emp.it_access_revoked %}checked{% endif %}>
+            <label class="form-check-label" for="it_access_revoked">Revoke System Access</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="devices_collected" id="devices_collected" {% if emp.devices_collected %}checked{% endif %}>
+            <label class="form-check-label" for="devices_collected">Collect Devices</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="files_transferred" id="files_transferred" {% if emp.files_transferred %}checked{% endif %}>
+            <label class="form-check-label" for="files_transferred">Transfer Files</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Update IT Info</button>
+    </form>
+</div>
+>>>>>>> 43451fc5cf1ae2c38def63e77b6905481892c38f
 {% endblock %} 
